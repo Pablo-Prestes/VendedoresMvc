@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using VendedoresWebMvc.Models;
+using VendedoresWebMvc.Models.ViewModels;
+
 
 namespace VendedoresWebMvc.Controllers
 {
@@ -15,7 +16,9 @@ namespace VendedoresWebMvc.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Estudante"] = "Pablo Henrique da Silva Prestes Neu";
             return View();
+
         }
 
         public IActionResult Privacy()
