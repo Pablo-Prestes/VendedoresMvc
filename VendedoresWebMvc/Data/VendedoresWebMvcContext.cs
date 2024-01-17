@@ -1,19 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using VendedoresWebMvc.Models;
 
-namespace VendedoresWebMvc.Data
+namespace Data
 {
     public class VendedoresWebMvcContext : DbContext
     {
-        public VendedoresWebMvcContext (DbContextOptions<VendedoresWebMvcContext> options)
+        private readonly IConfiguration _configuration;
+
+        public VendedoresWebMvcContext(DbContextOptions<VendedoresWebMvcContext> options, IConfiguration configuration)
             : base(options)
         {
+            _configuration = configuration;
         }
 
-        public DbSet<VendedoresWebMvc.Models.Departamento> Departamento { get; set; } = default!;
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionString = _configuration.GetConnectionString("VendedoresWebMvcContext");
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
+
+        public DbSet<Departamento> Departamento { get; set; }
     }
 }

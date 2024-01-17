@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using VendedoresWebMvc.Data;
+using Data;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<VendedoresWebMvcContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("VendedoresWebMvcContext") ?? throw new InvalidOperationException("Connection string 'VendedoresWebMvcContext' not found.")));
+
+builder.Services.AddDbContext<VendedoresWebMvcContext>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
