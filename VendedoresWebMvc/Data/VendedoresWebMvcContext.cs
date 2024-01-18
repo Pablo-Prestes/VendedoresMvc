@@ -21,5 +21,7 @@ namespace Data
         }
 
         public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Vendedor>  Vendedores { get; set; }
+        public DbSet<RegistroDeVenda> RegistroDeVenda{ get; set; }
     }
 }
