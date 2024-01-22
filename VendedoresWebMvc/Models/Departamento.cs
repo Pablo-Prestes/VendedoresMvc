@@ -1,4 +1,7 @@
-﻿namespace VendedoresWebMvc.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace VendedoresWebMvc.Models
 {
     public class Departamento
     {

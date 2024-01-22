@@ -1,7 +1,7 @@
 ﻿namespace VendedoresWebMvc.Models.Enums
 
 {
-    enum StatusDaVenda : int
+    public enum StatusDaVenda : int
     {
         Pedido = 0,
         Faturado = 1,

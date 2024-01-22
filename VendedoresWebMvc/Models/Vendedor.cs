@@ -18,10 +18,10 @@ namespace VendedoresWebMvc.Models
         
         public Vendedor() { }
 
-        public Vendedor(string nome, int id, string email, DateTime diaDoAniversario, double salarioBase, Departamento departamento)
+        public Vendedor(int id, string nome, string email, DateTime diaDoAniversario, double salarioBase, Departamento departamento)
         {
-            Nome = nome;
             Id = id;
+            Nome = nome;        
             Email = email;
             DiaDoAniversario = diaDoAniversario;
             SalarioBase = salarioBase;
