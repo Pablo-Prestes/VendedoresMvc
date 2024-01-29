@@ -1,8 +1,7 @@
 using Data;
-using System.Net.NetworkInformation;
 using VendedoresWebMvc.Data;
-using VendedoresWebMvc.Models;
 using Microsoft.EntityFrameworkCore;
+using VendedoresWebMvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionStringMysql = builder.Configuration.GetConnectionString("VendedoresWebMvcContext");
 builder.Services.AddDbContext<VendedoresWebMvcContext>(options => options.UseMySql(connectionStringMysql, ServerVersion.Parse("8.0-mysql")));
 
-//Registrando a classe no sistema de injeção de dependências da aplicação
-builder.Services.AddScoped<PopulacaoDeDados>();
+//Registrando os serviçoes/classe no sistema de injeção de dependências 
+builder.Services.AddScoped<PopulacaoDeDados>(); 
+builder.Services.AddScoped<VendedoresService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
