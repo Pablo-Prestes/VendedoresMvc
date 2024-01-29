@@ -24,9 +24,9 @@ namespace VendedoresWebMvc.Data
             }
             //População do banco de dados
             Departamento d1 = new Departamento ( 1, "Computador");
-            Departamento d2 = new Departamento(2, "Electronics");
-            Departamento d3 = new Departamento(3, "Fashion");
-            Departamento d4 = new Departamento(4, "Books");
+            Departamento d2 = new Departamento(2, "Eletrônicos");
+            Departamento d3 = new Departamento(3, "Moda");
+            Departamento d4 = new Departamento(4, "Livros");
 
             Vendedor s1 = new Vendedor(1, "Bob Brown", "bob@gmail.com", new DateTime(1998, 4, 21), 1000.0, d1);
             Vendedor s2 = new Vendedor(2, "Maria Green", "maria@gmail.com", new DateTime(1979, 12, 31), 3500.0, d2);

@@ -12,6 +12,7 @@ builder.Services.AddDbContext<VendedoresWebMvcContext>(options => options.UseMyS
 //Registrando os serviçoes/classe no sistema de injeção de dependências 
 builder.Services.AddScoped<PopulacaoDeDados>(); 
 builder.Services.AddScoped<VendedoresService>();
+builder.Services.AddScoped<DepartamentoService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

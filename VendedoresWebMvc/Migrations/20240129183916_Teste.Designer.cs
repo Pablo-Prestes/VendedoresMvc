@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VendedoresWebMvc.Migrations
 {
     [DbContext(typeof(VendedoresWebMvcContext))]
-    [Migration("20240122200800_Teste")]
+    [Migration("20240129183916_Teste")]
     partial class Teste
     {
         /// <inheritdoc />
