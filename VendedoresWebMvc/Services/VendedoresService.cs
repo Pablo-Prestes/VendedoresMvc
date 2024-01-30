@@ -1,5 +1,5 @@
 ﻿using Data;
-using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore;
 using VendedoresWebMvc.Models;
 
 namespace VendedoresWebMvc.Services
@@ -26,7 +26,7 @@ namespace VendedoresWebMvc.Services
         }
         public Vendedor MostrarPorId(int id)
         {
-            return _context.Vendedor.FirstOrDefault(obj => obj.Id == id);
+            return _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefault(obj => obj.Id == id);
         }
         public void Remove(int id) 
         {
