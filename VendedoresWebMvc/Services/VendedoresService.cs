@@ -1,6 +1,7 @@
 ﻿using Data;
 using Microsoft.EntityFrameworkCore;
 using VendedoresWebMvc.Models;
+using VendedoresWebMvc.Services.Exceptions;
 
 namespace VendedoresWebMvc.Services
 {
@@ -24,7 +25,7 @@ namespace VendedoresWebMvc.Services
             _context.Add(obj);
             _context.SaveChanges();         
         }
-        public Vendedor MostrarPorId(int id)
+        public Vendedor ProcurarPorId(int id)
         {
             return _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefault(obj => obj.Id == id);
         }
@@ -33,6 +34,23 @@ namespace VendedoresWebMvc.Services
             var obj = _context.Vendedor.Find(id);
             _context.Vendedor.Remove(obj);
             _context.SaveChanges();
+        }
+        public void Update(Vendedor obj)
+        {
+            if (!_context.Vendedor.Any(x => x.Id == obj.Id)) 
+            {
+                throw new NotFoundExpection("Id não encontrado !");
+            }
+            
+            try 
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
     }
 }   
