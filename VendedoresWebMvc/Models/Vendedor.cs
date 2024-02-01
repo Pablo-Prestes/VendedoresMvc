@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace VendedoresWebMvc.Models
 {
@@ -8,9 +9,19 @@ namespace VendedoresWebMvc.Models
 
         public string Nome{ get; set; }
         public int Id { get; set; }
+
+        [Display(Name ="E-mail")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
+        [Display(Name= "Dia do Aniversário")]
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime DiaDoAniversario { get; set; }
+
+        [Display(Name ="Salário Bruto")]
+       
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public double SalarioBase { get; set; }
         public Departamento Departamento { get; set; }
         public int DepartamentoId { get; set; }

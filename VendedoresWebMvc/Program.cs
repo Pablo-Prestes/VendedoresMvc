@@ -2,6 +2,8 @@ using Data;
 using VendedoresWebMvc.Data;
 using Microsoft.EntityFrameworkCore;
 using VendedoresWebMvc.Services;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+//Configurando a localização da aplição
+var localization = new CultureInfo("pt-BR");
+var localizationOption = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new(localization),
+    SupportedCultures = new List<CultureInfo> { localization },
+    SupportedUICultures = new List<CultureInfo> { localization }
+
+};
+app.UseRequestLocalization(localizationOption);
+
 //Executando a injeção de dependências declarada a cima (População no banco de dados)
 app.Services.CreateScope().ServiceProvider.GetRequiredService<PopulacaoDeDados>().PopulacaoDosDados();
 
