@@ -21,7 +21,7 @@ namespace VendedoresWebMvc.Controllers
             var list = _vendedoresService.MostrarVendedores();
             return View(list);
         }
-
+        //Cria a ação para criar
         public IActionResult Create()
         {
             var departamentos = _departamentoService.MostrarDepartamentos();
@@ -29,10 +29,22 @@ namespace VendedoresWebMvc.Controllers
             return View(viewModel);
         }
 
+        //Cria o vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Vendedor vendedor)
         {
+            //Validação para caso o Js esteja desativado e não cadastrar criar vendedores vazios
+            if (!ModelState.IsValid)
+            {
+                if (!ModelState.IsValid)
+                {
+                    var departamentos = _departamentoService.MostrarDepartamentos();
+                    var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
+                    return View(viewModel);
+                }
+                return View(vendedor);
+            }
             _vendedoresService.Insert(vendedor);
             return RedirectToAction("Index");
         }
@@ -91,11 +103,18 @@ namespace VendedoresWebMvc.Controllers
             return View(viewModel);
 
         }
-        //Deletando vendedor
+        //Editando vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Editar(int id, Vendedor vendedor)
         {
+            //Validação para caso o Js esteja desativado e não cadastrar criar usuários vazios
+            if (!ModelState.IsValid)
+            {
+                var departamentos = _departamentoService.MostrarDepartamentos();
+                var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
+                return View(viewModel);
+            }
             if (id != vendedor.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Ids diferentes" });
