@@ -3,6 +3,7 @@ using VendedoresWebMvc.Models;
 using VendedoresWebMvc.Models.ViewModels;
 using VendedoresWebMvc.Services;
 using VendedoresWebMvc.Services.Exceptions;
+using System.Diagnostics;
 
 namespace VendedoresWebMvc.Controllers
 {
@@ -40,12 +41,12 @@ namespace VendedoresWebMvc.Controllers
         {
             if (Id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             var obj = _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             return View(obj);
@@ -63,27 +64,27 @@ namespace VendedoresWebMvc.Controllers
         {
             if (Id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             var obj = _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado"});
             }
 
             return View(obj);
         }
-        //Criando a ação para Editar
+        //Criando a ação para Editar (Get)
         public IActionResult Editar(int? Id)
         {
             if (Id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
             var obj = _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
             List<Departamento> departamentos = _departamentoService.MostrarDepartamentos();
             VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
@@ -97,20 +98,27 @@ namespace VendedoresWebMvc.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Ids diferentes" });
             }
             try { 
             _vendedoresService.Update(vendedor);
             return RedirectToAction("Index");
             }
-            catch (NotFoundExpection ex)
+            catch (ApplicationException e)//Application exception é um supertipo e casa com NotFoundException e DbCocurrencyException
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message});
             }
-            catch (DbConcurrencyException)
+           
+        }
+        //Criando ação para as mensagens de erro personalizadas
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };         
+            return View(viewModel);
         }
     }
 }
