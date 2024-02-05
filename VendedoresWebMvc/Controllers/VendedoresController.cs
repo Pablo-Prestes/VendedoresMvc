@@ -2,8 +2,8 @@
 using VendedoresWebMvc.Models;
 using VendedoresWebMvc.Models.ViewModels;
 using VendedoresWebMvc.Services;
-using VendedoresWebMvc.Services.Exceptions;
 using System.Diagnostics;
+
 
 namespace VendedoresWebMvc.Controllers
 {
@@ -16,15 +16,15 @@ namespace VendedoresWebMvc.Controllers
             _vendedoresService = vendedoresService;
             _departamentoService = departamentoService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var list = _vendedoresService.MostrarVendedores();
+            var list = await _vendedoresService.MostrarVendedores();
             return View(list);
         }
         //Cria a ação para criar
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departamentos = _departamentoService.MostrarDepartamentos();
+            var departamentos = await _departamentoService.MostrarDepartamentos();
             var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
             return View(viewModel);
         }
@@ -32,30 +32,24 @@ namespace VendedoresWebMvc.Controllers
         //Cria o vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Vendedor vendedor)
+        public async Task<IActionResult> Create(Vendedor vendedor)
         {
-            //Validação para caso o Js esteja desativado e não cadastrar criar vendedores vazios
-            if (!ModelState.IsValid)
+            if (vendedor.Nome != null && vendedor.SalarioBase != null)
             {
-                if (!ModelState.IsValid)
-                {
-                    var departamentos = _departamentoService.MostrarDepartamentos();
-                    var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
-                    return View(viewModel);
-                }
-                return View(vendedor);
-            }
-            _vendedoresService.Insert(vendedor);
-            return RedirectToAction("Index");
+                await _vendedoresService.Insert(vendedor);
+                return RedirectToAction("Index");
+            } 
+            else
+                return BadRequest("Informe o vendedor");
         }
         //Criando a ação para a opção Deletar
-        public IActionResult Delete(int? Id)
+        public async Task<IActionResult> Delete(int? Id)
         {
             if (Id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            var obj = _vendedoresService.ProcurarPorId(Id.Value);
+            var obj = await _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
@@ -66,19 +60,19 @@ namespace VendedoresWebMvc.Controllers
         //Deletando vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _vendedoresService.Remove(id);
+            await _vendedoresService.Remove(id);
             return RedirectToAction("Index");
         }
         //Criando a ação para detalhes
-        public IActionResult Details(int? Id)
+        public async Task<IActionResult> Details(int? Id)
         {
             if (Id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            var obj = _vendedoresService.ProcurarPorId(Id.Value);
+            var obj = await _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado"});
@@ -87,40 +81,34 @@ namespace VendedoresWebMvc.Controllers
             return View(obj);
         }
         //Criando a ação para Editar (Get)
-        public IActionResult Editar(int? Id)
+        public async Task<IActionResult> Editar(int? Id)
         {
             if (Id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
-            var obj = _vendedoresService.ProcurarPorId(Id.Value);
+            var obj = await _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
-            List<Departamento> departamentos = _departamentoService.MostrarDepartamentos();
+            List<Departamento> departamentos = await _departamentoService.MostrarDepartamentos();
             VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
             return View(viewModel);
 
         }
-        //Editando vendedor
+        //Editando vendedor(Post)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Editar(int id, Vendedor vendedor)
-        {
-            //Validação para caso o Js esteja desativado e não cadastrar criar usuários vazios
-            if (!ModelState.IsValid)
-            {
-                var departamentos = _departamentoService.MostrarDepartamentos();
-                var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
-                return View(viewModel);
-            }
+        public async Task<IActionResult> Editar(int id, Vendedor vendedor)
+        {   
+
             if (id != vendedor.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Ids diferentes" });
             }
             try { 
-            _vendedoresService.Update(vendedor);
+            await _vendedoresService.Update(vendedor);
             return RedirectToAction("Index");
             }
             catch (ApplicationException e)//Application exception é um supertipo e casa com NotFoundException e DbCocurrencyException

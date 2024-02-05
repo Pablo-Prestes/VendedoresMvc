@@ -1,5 +1,6 @@
 ﻿using Data;
 using VendedoresWebMvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace VendedoresWebMvc.Services
 {
@@ -12,10 +13,10 @@ namespace VendedoresWebMvc.Services
             _context = context;
         }
 
-        public List<Departamento> MostrarDepartamentos() 
+        public async Task <List<Departamento>>MostrarDepartamentos()
         {
-            return _context.Departamento.OrderBy(x => x.Nome).ToList();
+            return await _context.Departamento.OrderBy(x => x.Nome).ToListAsync();
         }
     }
 }
-    
+   

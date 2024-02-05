@@ -3,7 +3,7 @@ using VendedoresWebMvc.Data;
 using Microsoft.EntityFrameworkCore;
 using VendedoresWebMvc.Services;
 using System.Globalization;
-using Microsoft.AspNetCore.Localization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
