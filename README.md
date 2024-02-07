@@ -3,8 +3,9 @@ Projeto criado usando .NetCore Mvc, Razor, MySql, BootStrap
 Passo para rodar o projeto em sua máquina 
 
 1- Verifique se você tem as principais dependências do projeto .Net 6.0 ou superior e Sdk 6.0 ou superior
- <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" /> - Para utiliar o MySql no projeto
- <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />Para utiliar o MySql no projeto
+ <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" /> - Para utilizar o MySql no projeto
+ 
+ <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />Para utilizar o MySql no projeto
 
 2- Segundo passo trocar a string de conexão com o banco de dados
  appsetings.json  "server=localhost;database=**NomeDaDB**;user=**Usuario**;password=**Senha**"
