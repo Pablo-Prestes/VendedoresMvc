@@ -4,12 +4,11 @@ using VendedoresWebMvc.Models.ViewModels;
 using VendedoresWebMvc.Services;
 using System.Diagnostics;
 
-
-
 namespace VendedoresWebMvc.Controllers
 {
     public class VendedoresController : Controller
     {
+        //Injetando os services na classe   
         private readonly VendedoresService _vendedoresService;
         private readonly DepartamentoService _departamentoService;
         private readonly RegistrosDeVendasService _registrosDeVendasService;
@@ -19,12 +18,14 @@ namespace VendedoresWebMvc.Controllers
             _departamentoService = departamentoService;
             _registrosDeVendasService = registrosDeVendas;
         }
+
+        //Action para ver vendedores
         public async Task<IActionResult> Index()
         {
             var list = await _vendedoresService.MostrarVendedores();
             return View(list);
         }
-        // Cria a ação para criar
+        // Action para criar um novo vendedor
         public async Task<IActionResult> Create()
         {
             var departamentos = await _departamentoService.MostrarDepartamentos();
@@ -32,20 +33,22 @@ namespace VendedoresWebMvc.Controllers
             return View(viewModel);
         }
 
-        //Cria o vendedor
+        //Post: para criar o vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendedor vendedor)
         {
-            if (vendedor.Nome != null && vendedor.Departamento != null)
+            if (ModelState.IsValid)
             {
-                await _vendedoresService.Insert(vendedor);
-                return RedirectToAction("Index");
+                var departamentos = await _departamentoService.MostrarDepartamentos();
+                var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
+                return View(viewModel);
             }
-            else
-                return BadRequest("Informe o vendedor");
+            await _vendedoresService.Insert(vendedor);
+            return RedirectToAction(nameof(Index));
+
         }
-        //Criando a ação para a opção Deletar
+        //Get: para deletar vendedor
         public async Task<IActionResult> Delete(int? Id)
         {
             if (Id == null)
@@ -60,7 +63,7 @@ namespace VendedoresWebMvc.Controllers
 
             return View(obj);
         }
-        //Deletando vendedor
+        //Post: para deletar vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -68,7 +71,7 @@ namespace VendedoresWebMvc.Controllers
             await _vendedoresService.Remove(id);
             return RedirectToAction("Index");
         }
-        //Criando a ação para detalhes
+        //Action para detalhes do vendedor
         public async Task<IActionResult> Details(int? Id)
         {
             if (Id == null)
@@ -83,7 +86,7 @@ namespace VendedoresWebMvc.Controllers
 
             return View(obj);
         }
-        //Criando a ação para Editar (Get)
+        //Get: para editar vendedor
         public async Task<IActionResult> Editar(int? Id)
         {
             if (Id == null)
@@ -99,7 +102,7 @@ namespace VendedoresWebMvc.Controllers
             VendedorFormViewModel viewModel = new() { Vendedor = obj, Departamentos = departamentos };
             return View(viewModel);
         }
-        //Editando vendedor(Post)
+        //Post: para editar vendedor
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, Vendedor vendedor)
@@ -120,6 +123,7 @@ namespace VendedoresWebMvc.Controllers
             }
 
         }
+        //Get: Para total de vendas do vendedor
         public async Task<IActionResult> TotalDeVendas(int id)
         {
             var vendedor = await _vendedoresService.ProcurarPorId(id);

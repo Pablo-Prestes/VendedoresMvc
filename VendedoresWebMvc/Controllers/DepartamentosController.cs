@@ -2,19 +2,22 @@
 using Microsoft.EntityFrameworkCore;
 using Data;
 using VendedoresWebMvc.Models;
+using VendedoresWebMvc.Services;
 
 namespace VendedoresWebMvc.Controllers
 {
     public class DepartamentosController : Controller
     {
         private readonly VendedoresWebMvcContext _context;
+        private readonly DepartamentoService _departamentoService;
 
-        public DepartamentosController(VendedoresWebMvcContext context)
+        public DepartamentosController(VendedoresWebMvcContext context, DepartamentoService departamentoService)
         {
             _context = context;
+            _departamentoService = departamentoService;
         }
 
-        // GET: Departamentos
+        // Get: Departamento
         public async Task<IActionResult> Index()
         {
               return _context.Departamento != null ? 
@@ -22,7 +25,7 @@ namespace VendedoresWebMvc.Controllers
                           Problem("Entity set 'VendedoresWebMvcContext.Departamento'  is null.");
         }
 
-        // GET: Departamentos/Details/5
+        // Get: detalhes do departamento
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Departamento == null)
@@ -40,29 +43,27 @@ namespace VendedoresWebMvc.Controllers
             return View(departamento);
         }
 
-        // GET: Departamentos/Create
+        // Get: Para criar departamentos
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departamentos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Post: para criar um departamento
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome")] Departamento departamento)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(departamento);
-                await _context.SaveChangesAsync();
+
+                await _departamentoService.Insert(departamento);
                 return RedirectToAction(nameof(Index));
             }
             return View(departamento);
         }
 
-        // GET: Departamentos/Edit/5
+        // Get:Para editar departamento
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Departamento == null)
@@ -77,10 +78,7 @@ namespace VendedoresWebMvc.Controllers
             }
             return View(departamento);
         }
-
-        // POST: Departamentos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //Post: para editar departamento   
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Departamento departamento)
@@ -113,7 +111,7 @@ namespace VendedoresWebMvc.Controllers
             return View(departamento);
         }
 
-        // GET: Departamentos/Delete/5
+        // Get: Departamentos
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Departamento == null)
@@ -131,7 +129,7 @@ namespace VendedoresWebMvc.Controllers
             return View(departamento);
         }
 
-        // POST: Departamentos/Delete/5
+        // Post:Para deletar vendedor
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -140,13 +138,8 @@ namespace VendedoresWebMvc.Controllers
             {
                 return Problem("Entity set 'VendedoresWebMvcContext.Departamento'  is null.");
             }
-            var departamento = await _context.Departamento.FindAsync(id);
-            if (departamento != null)
-            {
-                _context.Departamento.Remove(departamento);
-            }
-            
-            await _context.SaveChangesAsync();
+
+            await _departamentoService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 

@@ -6,6 +6,7 @@ namespace VendedoresWebMvc.Services
 {
     public class RegistrosDeVendasService
     {
+    
         private readonly VendedoresWebMvcContext _context;
 
         public RegistrosDeVendasService(VendedoresWebMvcContext context) 
@@ -13,6 +14,7 @@ namespace VendedoresWebMvc.Services
             _context = context;
         }
 
+        //Função para pegar os registros de vendas do DB 
         public async Task<List<RegistrosDeVendas>> ProcurarPorData(DateTime? minDate, DateTime? maxDate) 
         {
             var result = from obj in _context.RegistroDeVenda select obj;
@@ -30,7 +32,7 @@ namespace VendedoresWebMvc.Services
                 .OrderByDescending(x => x.DataDaVenda)
                 .ToListAsync();           
         }
-
+        //Função para pegar os registros de vendas do DB 
         public async Task<List<IGrouping<Departamento,RegistrosDeVendas>>> ProcurarPorGrupo(DateTime? minDate, DateTime? maxDate)
         {
             var result = from obj in _context.RegistroDeVenda select obj;
@@ -49,6 +51,8 @@ namespace VendedoresWebMvc.Services
                 .GroupBy(x => x.Vendedor.Departamento)
                 .ToListAsync();
         }
+
+        //Função para pegar registros de vendas do DB (Vendedor específico)
         public async Task<List<RegistrosDeVendas>> ProcurarPorVendedorId(int vendedorId)
         {
             return await _context.RegistroDeVenda
