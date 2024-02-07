@@ -30,7 +30,7 @@ namespace VendedoresWebMvc.Models
         public double SalarioBase { get; set; }
         public Departamento Departamento { get; set; }
         public int DepartamentoId { get; set; }
-        public ICollection<RegistroDeVenda> Vendas { get; set; } = new List<RegistroDeVenda>();    
+        public ICollection<RegistrosDeVendas> Vendas { get; set; } = new List<RegistrosDeVendas>();    
         
         public Vendedor() { }
 
@@ -44,11 +44,11 @@ namespace VendedoresWebMvc.Models
             Departamento = departamento;
         }
 
-        public void AdicionarVenda(RegistroDeVenda registroDeVenda) 
+        public void AdicionarVenda(RegistrosDeVendas registroDeVenda) 
         {
             Vendas.Add(registroDeVenda);
         }
-        public void RemoverVenda(RegistroDeVenda registroDeVenda) 
+        public void RemoverVenda(RegistrosDeVendas registroDeVenda) 
         {
             Vendas.Remove(registroDeVenda);
         }

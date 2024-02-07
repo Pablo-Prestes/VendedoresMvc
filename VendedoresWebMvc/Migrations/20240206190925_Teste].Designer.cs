@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VendedoresWebMvc.Migrations
 {
     [DbContext(typeof(VendedoresWebMvcContext))]
-    [Migration("20240129183916_Teste")]
+    [Migration("20240206190925_Teste]")]
     partial class Teste
     {
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace VendedoresWebMvc.Migrations
                     b.ToTable("Departamento");
                 });
 
-            modelBuilder.Entity("VendedoresWebMvc.Models.RegistroDeVenda", b =>
+            modelBuilder.Entity("VendedoresWebMvc.Models.RegistrosDeVendas", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,8 @@ namespace VendedoresWebMvc.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
                     b.Property<double>("SalarioBase")
                         .HasColumnType("double");
@@ -92,7 +93,7 @@ namespace VendedoresWebMvc.Migrations
                     b.ToTable("Vendedor");
                 });
 
-            modelBuilder.Entity("VendedoresWebMvc.Models.RegistroDeVenda", b =>
+            modelBuilder.Entity("VendedoresWebMvc.Models.RegistrosDeVendas", b =>
                 {
                     b.HasOne("VendedoresWebMvc.Models.Vendedor", "Vendedor")
                         .WithMany("Vendas")

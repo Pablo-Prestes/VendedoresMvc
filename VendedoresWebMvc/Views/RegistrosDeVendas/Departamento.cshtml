@@ -1,0 +1,72 @@
+﻿@model IEnumerable<IGrouping<Departamento, RegistrosDeVendas>>
+
+@{
+    ViewData["Title"] = "Departamentos";
+    DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
+    DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="minDate">Min Date</label>
+                    <input type="date" class="form-control" name="minDate" value=@ViewData["minDate"]>
+                </div>
+                <div class="form-group">
+                    <label for="maxDate">Max Date</label>
+                    <input type="date" class="form-control" name="maxDate" value=@ViewData["maxDate"]>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
+</nav>
+
+@foreach (var departmentGroup in Model)
+{   
+        <h4 class="panel-title">Departamento @departmentGroup.Key.Nome, Total de Vendas R$ @departmentGroup.Key.TotalVendas(minDate, maxDate).ToString("N2")</h4>   
+        <div class="panel-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr class="success bg-primary">
+                        <th class="text-white">
+                            Data da Venda
+                        </th>
+                        <th class="text-white">
+                            Total da Venda
+                        </th>
+                        <th class="text-white">
+                            Vendedor
+                        </th>
+                        <th class="text-white">
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in departmentGroup)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataDaVenda)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ValorDaVenda)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vendedor.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StatusDaVenda)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    
+}

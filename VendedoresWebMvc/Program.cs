@@ -15,6 +15,7 @@ builder.Services.AddDbContext<VendedoresWebMvcContext>(options => options.UseMyS
 builder.Services.AddScoped<PopulacaoDeDados>(); 
 builder.Services.AddScoped<VendedoresService>();
 builder.Services.AddScoped<DepartamentoService>();
+builder.Services.AddScoped<RegistrosDeVendasService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

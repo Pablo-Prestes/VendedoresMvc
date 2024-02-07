@@ -21,13 +21,12 @@ namespace VendedoresWebMvc.Services
 
         public async Task Insert(Vendedor obj) 
         {
-            //obj.Departamento = _context.Departamento.First();
             _context.Add(obj);
             await _context.SaveChangesAsync();         
         }
         public async Task<Vendedor> ProcurarPorId(int id)
         {
-            return await _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefaultAsync(obj => obj.Id == id);
+            return await _context.Vendedor.Include(obj => obj.Departamento).FirstOrDefaultAsync(obj => obj.Id == id); 
         }
         public async Task Remove(int id) 
         {
@@ -38,7 +37,7 @@ namespace VendedoresWebMvc.Services
         public async Task Update(Vendedor obj)
         {
             bool verifica = await _context.Vendedor.AnyAsync(x => x.Id == obj.Id);
-            if (verifica) 
+            if (!verifica) 
             {
                 throw new NotFoundExpection("Id não encontrado !");
             }

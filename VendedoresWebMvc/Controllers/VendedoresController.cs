@@ -21,7 +21,7 @@ namespace VendedoresWebMvc.Controllers
             var list = await _vendedoresService.MostrarVendedores();
             return View(list);
         }
-        //Cria a ação para criar
+        // Cria a ação para criar
         public async Task<IActionResult> Create()
         {
             var departamentos = await _departamentoService.MostrarDepartamentos();
@@ -34,11 +34,11 @@ namespace VendedoresWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vendedor vendedor)
         {
-            if (vendedor.Nome != null && vendedor.SalarioBase != null)
+            if (vendedor.Nome != null && vendedor.Departamento != null)
             {
                 await _vendedoresService.Insert(vendedor);
                 return RedirectToAction("Index");
-            } 
+            }
             else
                 return BadRequest("Informe o vendedor");
         }
@@ -75,7 +75,7 @@ namespace VendedoresWebMvc.Controllers
             var obj = await _vendedoresService.ProcurarPorId(Id.Value);
             if (obj == null)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id não encontrado"});
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             return View(obj);
@@ -93,29 +93,29 @@ namespace VendedoresWebMvc.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
             List<Departamento> departamentos = await _departamentoService.MostrarDepartamentos();
-            VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = obj, Departamentos = departamentos };
+            VendedorFormViewModel viewModel = new() { Vendedor = obj, Departamentos = departamentos };
             return View(viewModel);
-
         }
         //Editando vendedor(Post)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, Vendedor vendedor)
-        {   
+        {
 
             if (id != vendedor.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Ids diferentes" });
             }
-            try { 
-            await _vendedoresService.Update(vendedor);
-            return RedirectToAction("Index");
+            try
+            {
+                await _vendedoresService.Update(vendedor);
+                return RedirectToAction("Index");
             }
             catch (ApplicationException e)//Application exception é um supertipo e casa com NotFoundException e DbCocurrencyException
             {
-                return RedirectToAction(nameof(Error), new { message = e.Message});
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-           
+
         }
         //Criando ação para as mensagens de erro personalizadas
         public IActionResult Error(string message)
@@ -124,7 +124,7 @@ namespace VendedoresWebMvc.Controllers
             {
                 Message = message,
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-            };         
+            };
             return View(viewModel);
         }
     }
