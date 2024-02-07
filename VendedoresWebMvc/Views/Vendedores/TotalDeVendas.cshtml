@@ -1,0 +1,39 @@
+﻿@model VendedoresWebMvc.Models.ViewModels.VendedorVendasViewModel
+
+@{
+    ViewData["Title"] = "Total de Vendas";
+}
+
+<h2>Total de Vendas</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">Vendedor:</dt>
+    <dd class="col-sm-10">@Model.Vendedor.Nome</dd>
+
+    <dt class="col-sm-2">Departamento:</dt>
+    <dd class="col-sm-10">@Model.Vendedor.Departamento.Nome</dd>
+</dl>
+
+<h4>Total de vendas @Model.TotalDeVendas.ToString("C")</h4>
+<a asp-action="Index" class="btn btn-info " style="margin-bottom:1rem;">Voltar</a>
+<table class="table table table-striped table-hover">
+    <thead>
+        <tr class="success bg-primary">
+            <th class="text-white">Data da Venda</th>
+            <th class="text-white">Valor da Venda</th>
+            <th class="text-white">Departamento</th>
+            <th class="text-white">Status da Venda</th>         
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var venda in Model.Vendas)
+        {
+            <tr>
+                <td>@venda.DataDaVenda.ToString("dd/MM/yyyy")</td>
+                <td>@venda.ValorDaVenda.ToString("C2")</td>
+                <td>@venda.Vendedor.Departamento.Nome</td>
+                <td>@venda.StatusDaVenda</td>             
+            </tr>
+        }
+    </tbody>
+</table>

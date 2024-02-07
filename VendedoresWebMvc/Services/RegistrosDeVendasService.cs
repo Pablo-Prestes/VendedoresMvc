@@ -49,6 +49,13 @@ namespace VendedoresWebMvc.Services
                 .GroupBy(x => x.Vendedor.Departamento)
                 .ToListAsync();
         }
-
+        public async Task<List<RegistrosDeVendas>> ProcurarPorVendedorId(int vendedorId)
+        {
+            return await _context.RegistroDeVenda
+                .Where(x => x.Vendedor.Id == vendedorId)
+                .Include(x => x.Vendedor)
+                .OrderByDescending(x => x.DataDaVenda)
+                .ToListAsync();
+        }
     }
 }

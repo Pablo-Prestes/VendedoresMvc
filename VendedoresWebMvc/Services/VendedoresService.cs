@@ -41,8 +41,8 @@ namespace VendedoresWebMvc.Services
             {
                 throw new NotFoundExpection("Id não encontrado !");
             }
-            
-            try 
+
+            try
             {
                 _context.Update(obj);
                 await _context.SaveChangesAsync();
@@ -52,5 +52,6 @@ namespace VendedoresWebMvc.Services
                 throw new DbConcurrencyException(e.Message);
             }
         }
+   
     }
 }   

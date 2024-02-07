@@ -5,16 +5,19 @@ using VendedoresWebMvc.Services;
 using System.Diagnostics;
 
 
+
 namespace VendedoresWebMvc.Controllers
 {
     public class VendedoresController : Controller
     {
         private readonly VendedoresService _vendedoresService;
         private readonly DepartamentoService _departamentoService;
-        public VendedoresController(VendedoresService vendedoresService, DepartamentoService departamentoService)
+        private readonly RegistrosDeVendasService _registrosDeVendasService;
+        public VendedoresController(VendedoresService vendedoresService, DepartamentoService departamentoService, RegistrosDeVendasService registrosDeVendas)
         {
             _vendedoresService = vendedoresService;
             _departamentoService = departamentoService;
+            _registrosDeVendasService = registrosDeVendas;
         }
         public async Task<IActionResult> Index()
         {
@@ -116,6 +119,21 @@ namespace VendedoresWebMvc.Controllers
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
 
+        }
+        public async Task<IActionResult> TotalDeVendas(int id)
+        {
+            var vendedor = await _vendedoresService.ProcurarPorId(id);
+            var vendas = await _registrosDeVendasService.ProcurarPorVendedorId(id);
+            var totalDeVendas = vendas.Sum(x => x.ValorDaVenda);
+
+            var viewModel = new VendedorVendasViewModel
+            {
+                Vendedor = vendedor,
+                Vendas = vendas,
+                TotalDeVendas = totalDeVendas
+            };
+
+            return View(viewModel);
         }
         //Criando ação para as mensagens de erro personalizadas
         public IActionResult Error(string message)

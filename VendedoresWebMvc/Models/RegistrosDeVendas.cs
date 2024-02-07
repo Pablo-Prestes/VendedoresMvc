@@ -22,8 +22,7 @@ namespace VendedoresWebMvc.Models
         public RegistrosDeVendas() { }
 
         public RegistrosDeVendas(int id, DateTime dataDaVenda, double valorDaVenda, StatusDaVenda statusDaVenda, Vendedor vendedor)
-        {
-           
+        {           
             Id = id;
             DataDaVenda = dataDaVenda;
             ValorDaVenda = valorDaVenda;

@@ -18,58 +18,60 @@
                     <input type="date" class="form-control" name="maxDate" value=@ViewData["maxDate"] />
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <button type="submit" class="btn btn-primary" style="margin-top:15px">Filtrar</button>
+            <a asp-action="Index" class="btn btn-info" style="margin-top:15px">Voltar</a>
+            <div />
         </form>
     </div>
 </nav>
-    <h4 class="panel-title">Total de Vendas R$@Model.Sum(obj => obj.ValorDaVenda).ToString("N2")</h4>
-    <table class="table table-striped table-hover ">
-        <thead>
-            <tr class="success bg-primary">
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.DataDaVenda)
-                </th>
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.Vendedor)
-                </th>
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.Vendedor.Departamento)
-                </th>
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.ValorDaVenda)
-                </th>
-                <th class="text-white">
-                    @Html.DisplayNameFor(model => model.StatusDaVenda)
-                </th>
+<h4 class="panel-title">Total de Vendas R$@Model.Sum(obj => obj.ValorDaVenda).ToString("N2")</h4>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr class="success bg-primary">
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.DataDaVenda)
+            </th>
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.Vendedor)
+            </th>
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.Vendedor.Departamento)
+            </th>
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.ValorDaVenda)
+            </th>
+            <th class="text-white">
+                @Html.DisplayNameFor(model => model.StatusDaVenda)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDaVenda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vendedor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vendedor.Departamento.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorDaVenda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusDaVenda)
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataDaVenda)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vendedor.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vendedor.Departamento.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ValorDaVenda)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StatusDaVenda)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
 
