@@ -1,18 +1,16 @@
-Projeto criado usando .NetCore Mvc, Razor, MySql, BootStrap
+# Gerencia histórico de vendas - Criado com ASP.NET Core.
 
-Passo para rodar o projeto em sua máquina 
+Está sendo desenvolvido um projeto de gerenciamento de vendas, utilizando ASP.NET Core 7.
 
-1- Verifique se você tem as principais dependências do projeto .Net 6.0 ou superior e Sdk 6.0 ou superior
- <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
- 
- <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />Para utilizar o MySql no projeto
+## Tecnologias e ferramentas utilizadas
+- Visual Studio 2022
+- ASP.NET Core 6
+- EF Core
+- Swagger
+- MySql
 
-2- Segundo passo trocar a string de conexão com o banco de dados
- appsetings.json  "server=localhost;database=**NomeDaDB**;user=**Usuario**;password=**Senha**"
 
-3- Criar as migrações para o banco de dados
-  Em PackgeManagerConsole cria as migrações Add-migration "Nome da migração",
-  Atualize o DB com as migrações Update-database. 
-  A população do banco de dados irá ocorrer automática em Data/PopulacaoDeDados(Somente na primeira execução do programa)
+## Funcionalidades
+- Cadastro, Listagem, Detalhes (Vendedor, Departamento), visualização do histórico de vendas, filtros, total de vendas vendedor, Atualização, e Remoção,
 
- 4 -  Execute o projeto
+## Status: Finalizado
